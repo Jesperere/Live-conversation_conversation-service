@@ -1,0 +1,20 @@
+{
+  "name": "live-conversation_conversation-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jesperere/Live-conversation_conversation-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jesperere/Live-conversation_conversation-service/issues"
+  },
+  "homepage": "https://github.com/Jesperere/Live-conversation_conversation-service#readme"
+}
