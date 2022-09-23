@@ -9,12 +9,22 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 wss.on("connection", (ws: WebSocket) => {
+    console.log("Client connected")
     ws.on("message", (message: string) => {
         console.log("recieved: %s", message)
-        ws.send(`Hello, you sent ->  ${message}`)
-    });
 
-    ws.send("Hi, im a websocket server");
+        // wss.clients.forEach(function e(client){
+        //     client.send(message)            
+        // })
+
+       ws.send(`Hello, you sent ->  ${message}`)
+    });
+    
+       ws.send("Hi, im a websocket server");
+
+   ws.on("close", function () {
+        console.log("Client disconnected")
+   })
 });
 
 server.listen(process.env.PORT || 8999, () => {
