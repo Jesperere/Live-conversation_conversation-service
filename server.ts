@@ -13,11 +13,9 @@ wss.on("connection", (ws: WebSocket) => {
     ws.on("message", (message: string) => {
         console.log("recieved: %s", message)
 
-        // wss.clients.forEach(function e(client){
-        //     client.send(message)            
-        // })
-
-       ws.send(`Hello, you sent ->  ${message}`)
+        wss.clients.forEach(function each(client){
+            client.send("User sent: " + message.toString())            
+        })
     });
     
        ws.send("Hi, im a websocket server");
