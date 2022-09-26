@@ -32,7 +32,6 @@ wss.on("connection", (ws: WebSocket) => {
     clients[id] = ws;
 
     ws.on("message", (message: string) => {
-        console.log("recieved:", message.toString(), "aa")
         try {
 
             const data = JSON.parse(message.toString()) as IConversationPackage
