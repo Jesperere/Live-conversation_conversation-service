@@ -20,7 +20,7 @@ const sendToClient = (id: string, content: IConversationPackage) => {
     socket.send(JSON.stringify(content))
 }
 
-const broadCastToClinets = (content: IConversationPackage) => {
+const broadCastToClients = (content: IConversationPackage) => {
     Object.values(clients).forEach(ws => ws.send(JSON.stringify(content)))
 }
 
@@ -35,11 +35,10 @@ wss.on("connection", (ws: WebSocket) => {
         try {
 
             const data = JSON.parse(message.toString()) as IConversationPackage
-            console.log(data);
             if (!("type" in data)) throw new Error("type is missing")
             switch (data.type) {
                 case ConversationType.CONVERSATION:
-                    broadCastToClinets(data)
+                    broadCastToClients({...data, id})
                     break;
                 case ConversationType.INITIATE:
                     break;
