@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: live-conversation-conversation-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: live-conversation-conversation-service
+  template:
+    metadata:
+      labels:
+        app: live-conversation-conversation-service
+    spec:
+      containers:
+      - name: live-conversation-conversation-service
+        image: key77/live-conversation_conversation-service
+        resources:
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8999
