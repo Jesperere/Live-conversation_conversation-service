@@ -1,9 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: live-conversation-web-socket
+  name: live-conversation-web-socket-ingress
   labels:
-    name: live-conversation-web-socket
+    app.kubernetes.io/name: web-socket-ingress
+    app.kubernetes.io/part-of: live-conversation
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -16,6 +17,6 @@ spec:
         path: "/ws/?(.*)"
         backend:
           service:
-            name: live-conversation-conversation-service-service
+            name: live-conversation-web-socket-service
             port: 
               number: 8999

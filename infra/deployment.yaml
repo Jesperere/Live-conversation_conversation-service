@@ -1,18 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: live-conversation-conversation-service-deployment
+  name: live-conversation-web-socket-deployment
+  labels:
+    app.kubernetes.io/name: web-socket-deployment
+    app.kubernetes.io/part-of: live-conversation
 spec:
   selector:
     matchLabels:
-      app: live-conversation-conversation-service
+      app: live-conversation-web-socket
   template:
     metadata:
       labels:
-        app: live-conversation-conversation-service
+        app: live-conversation-web-socket
     spec:
       containers:
-      - name: live-conversation-conversation-service
+      - name: live-conversation-web-socket
         image: key77/live-conversation_conversation-service
         resources:
           limits:
