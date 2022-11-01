@@ -1,0 +1,14 @@
+## MAIN TEMPLATE FOR DEPLOYMENT ON-CLOUD
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - ingress.yaml
+  - service.yaml
+
+# Base-kustomization of below properties (=for ALL images)
+images:
+  - name: crdevwe001.azurecr.io/live-conversation/conversation-service
+    # Add tag to ALL images - tag-value defined in pipeline
+    newTag: $IMAGE_TAG

@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: live-conversation-conversation-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: live.labmojodoo.com
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/ws/?(.*)"
+          backend:
+            service:
+              name: live-conversation-conversation-service-service
+              port: 
+                number: 8999
