@@ -6,9 +6,9 @@ metadata:
 spec:
   ports:
   - name: live-conversation-conversation-service-service
-    port: 8999
+    port: 3000
     protocol: TCP
-    targetPort: 8999
+    targetPort: 3000
   selector:
     app: live-conversation-conversation-service
 ---
@@ -33,10 +33,10 @@ spec:
       - env:
         - name: myVar2
           value: myVarValue2
-        image: crdevwe001.azurecr.io/live-conversation/conversation-service:3925e025d3a8b8e82f9da12adeb873f78c252fea
+        image: crdevwe001.azurecr.io/live-conversation/conversation-service:dbeb4e57ee7de554e3cae0ad6c5b7eb3ec0050ae
         name: live-conversation-conversation-service
         ports:
-        - containerPort: 8999
+        - containerPort: 3000
         resources:
           limits:
             cpu: 500m
@@ -48,7 +48,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
   name: live-conversation-conversation-service-ingress
   namespace: dev
@@ -62,7 +62,7 @@ spec:
           service:
             name: live-conversation-conversation-service-service
             port:
-              number: 8999
+              number: 3000
         path: /ws/?(.*)
         pathType: Prefix
   tls:
