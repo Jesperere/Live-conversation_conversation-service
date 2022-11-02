@@ -6,9 +6,9 @@ metadata:
 spec:
   ports:
   - name: live-conversation-conversation-service-service
-    port: 3000
+    port: 8999
     protocol: TCP
-    targetPort: 3000
+    targetPort: 8999
   selector:
     app: live-conversation-conversation-service
 ---
@@ -33,10 +33,10 @@ spec:
       - env:
         - name: myVar2
           value: myVarValue2
-        image: crdevwe001.azurecr.io/live-conversation/conversation-service:dbeb4e57ee7de554e3cae0ad6c5b7eb3ec0050ae
+        image: crdevwe001.azurecr.io/live-conversation/conversation-service:b8ce484b7d06b1f1b1be296e5e2e9aeedb582397
         name: live-conversation-conversation-service
         ports:
-        - containerPort: 3000
+        - containerPort: 8999
         resources:
           limits:
             cpu: 500m
@@ -62,7 +62,7 @@ spec:
           service:
             name: live-conversation-conversation-service-service
             port:
-              number: 3000
+              number: 8999
         path: /ws/?(.*)
         pathType: Prefix
   tls:
