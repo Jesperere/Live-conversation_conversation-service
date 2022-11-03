@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dev
+# Dev-kustomization will build upon the base-kustomization
+resources:
+  - ../../base
+# Any changes to the base-files (depl, ingress, srv) will be done from the Dev-patches-file
+patchesStrategicMerge:
+  - "patches.yaml"
+
+# patch the nginx/ingress directly in Kust-file (as per below), not in the dev-patches-file ...
+# ... the dev-patches-file (ingress-object) overrode the base-ingress-file completely, ...
+# ... i.e. causing omission of the http-section (spec > rule > host > http ...)  
+patches:
+  - target:
+      kind: Ingress
+      name: live-conversation-conversation-service-ingress
+    # patch-operation (find and replace ONLY specific properties/values):  
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: live-dev.labmojodoo.com

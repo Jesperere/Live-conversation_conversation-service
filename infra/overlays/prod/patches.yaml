@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: live-conversation-conversation-service-deployment
+  labels:
+    app.kubernetes.io/name: live-conversation-conversation-service-deployment
+spec:
+ selector:
+    matchLabels:
+      app: live-conversation-conversation-service
+ replicas: 1
+ template:
+   spec:
+     containers:
+       - name: live-conversation-conversation-service
+         env: 
+           - name: myVar2
+             value: myVarValue2
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: live-conversation-conversation-service-ingress
+spec: 
+  tls:
+    - hosts:
+        - live.labmojodoo.com
+      secretName: tls-live-prod  

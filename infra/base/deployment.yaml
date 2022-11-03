@@ -2,7 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: live-conversation-conversation-service-deployment
+  labels:
+    app.kubernetes.io/name: live-conversation-conversation-service-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: live-conversation-conversation-service
@@ -13,7 +16,7 @@ spec:
     spec:
       containers:
       - name: live-conversation-conversation-service
-        image: key77/live-conversation_conversation-service
+        image: crdevwe001.azurecr.io/live-conversation/conversation-service
         resources:
           limits:
             memory: "512Mi"
