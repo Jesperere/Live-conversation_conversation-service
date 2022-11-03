@@ -53,6 +53,7 @@ wss.on("connection", (ws: WebSocket) => {
 
     ws.on("close", function () {
         delete clients[id]
+        
     })
 
     const initPackage: IConversationInit = {
