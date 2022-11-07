@@ -1,11 +1,32 @@
 import * as express from "express"
 import * as http from "http"
 import * as WebSocket from "ws"
+import { IAuth } from "./types/IAuth";
 import { IConversationInit } from "./types/IConversationInit";
 import { IConversationPackage } from "./types/IConversationPackage";
 import { ConversationType } from "./types/typeEnums";
+import * as jwt from 'jsonwebtoken'
+import { visitFunctionBody } from "typescript";
+import { IConversationJWTMessage } from "./types/IConversationJWTMessage";
+import { IConversationMessage } from "./types/IConversationMessage";
+
+const JWT_SECRET_KEY = "SECRET"
 
 const app = express();
+
+
+
+app.use(express.json())
+app.post('/auth', (req, res) => {
+    const content: IAuth = req.body
+    // Check against DB that user credentials are valid
+    const token = jwt.sign({
+        alias: content.username,
+        color: "#FF0000",
+        verified: true
+    }, JWT_SECRET_KEY)
+    res.send(token)
+})
 
 const server = http.createServer(app);
 
@@ -33,14 +54,30 @@ wss.on("connection", (ws: WebSocket) => {
 
     ws.on("message", (message: string) => {
         try {
-
             const data = JSON.parse(message.toString()) as IConversationPackage
             if (!("type" in data)) throw new Error("type is missing")
             switch (data.type) {
                 case ConversationType.CONVERSATION:
-                    broadCastToClients({...data, id})
+                    broadCastToClients({ ...data, id })
                     break;
                 case ConversationType.INITIATE:
+                    break;
+                case ConversationType.CONVERSATION_JWT:
+                    try {
+                        const { token, message } = data as IConversationJWTMessage;
+                        const verified = jwt.verify(token, JWT_SECRET_KEY) as any;
+                        console.log(verified);
+                        broadCastToClients({
+                            type: ConversationType.CONVERSATION,
+                            alias: verified.alias,
+                            color: verified.color,
+                            message,
+                            id,
+                            verified: verified.verified,
+                        } as IConversationMessage)
+                    } catch {
+                        console.log("Unverified");
+                    }
                     break;
                 default:
                     break;
@@ -53,7 +90,7 @@ wss.on("connection", (ws: WebSocket) => {
 
     ws.on("close", function () {
         delete clients[id]
-        
+
     })
 
     const initPackage: IConversationInit = {
