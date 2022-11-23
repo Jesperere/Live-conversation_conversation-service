@@ -14,8 +14,6 @@ const JWT_SECRET_KEY = "SECRET"
 
 const app = express();
 
-
-
 app.use(express.json())
 app.post('/auth', (req, res) => {
     const content: IAuth = req.body
@@ -29,9 +27,7 @@ app.post('/auth', (req, res) => {
 })
 
 const server = http.createServer(app);
-
 const wss = new WebSocket.Server({ server });
-
 const clients: Record<string, WebSocket> = {}
 
 const sendToClient = (id: string, content: IConversationPackage) => {
@@ -47,9 +43,7 @@ const broadCastToClients = (content: IConversationPackage) => {
 
 wss.on("connection", (ws: WebSocket) => {
     console.log("Client connected")
-
     const [, id] = Math.random().toString().split('.')
-
     clients[id] = ws;
 
     ws.on("message", (message: string) => {
@@ -84,13 +78,11 @@ wss.on("connection", (ws: WebSocket) => {
             }
         } catch (error) {
             console.error(error);
-
         }
     });
 
     ws.on("close", function () {
         delete clients[id]
-
     })
 
     const initPackage: IConversationInit = {
@@ -98,8 +90,6 @@ wss.on("connection", (ws: WebSocket) => {
         type: ConversationType.INITIATE
     }
     sendToClient(id, initPackage)
-
-
 });
 
 server.listen(process.env.PORT || 8999, () => {
