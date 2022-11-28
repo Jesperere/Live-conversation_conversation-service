@@ -15,6 +15,8 @@ const JWT_SECRET_KEY = "SECRET"
 const app = express();
 
 app.use(express.json())
+
+//This can all be deleted?
 app.post('/auth', (req, res) => {
     const content: IAuth = req.body
     // Check against DB that user credentials are valid
@@ -67,7 +69,7 @@ wss.on("connection", (ws: WebSocket) => {
                             color: verified.color,
                             message,
                             id,
-                            verified: verified.verified,
+                            verified: true,
                         } as IConversationMessage)
                     } catch {
                         console.log("Unverified");
