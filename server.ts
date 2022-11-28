@@ -6,11 +6,13 @@ import { IConversationInit } from "./types/IConversationInit";
 import { IConversationPackage } from "./types/IConversationPackage";
 import { ConversationType } from "./types/typeEnums";
 import * as jwt from 'jsonwebtoken'
-import { visitFunctionBody } from "typescript";
 import { IConversationJWTMessage } from "./types/IConversationJWTMessage";
 import { IConversationMessage } from "./types/IConversationMessage";
+import * as dotenv from 'dotenv'
 
-const JWT_SECRET_KEY = "SECRET"
+dotenv.config()
+
+const secret = process.env.SECRET!
 
 const app = express();
 
@@ -24,7 +26,7 @@ app.post('/auth', (req, res) => {
         alias: content.username,
         color: "#FF0000",
         verified: true
-    }, JWT_SECRET_KEY)
+    }, secret)
     res.send(token)
 })
 
@@ -61,7 +63,7 @@ wss.on("connection", (ws: WebSocket) => {
                 case ConversationType.CONVERSATION_JWT:
                     try {
                         const { token, message } = data as IConversationJWTMessage;
-                        const verified = jwt.verify(token, JWT_SECRET_KEY) as any;
+                        const verified = jwt.verify(token, secret) as any;
                         console.log(verified);
                         broadCastToClients({
                             type: ConversationType.CONVERSATION,
