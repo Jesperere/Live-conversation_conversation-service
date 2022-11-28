@@ -16,19 +16,21 @@ const secret = process.env.SECRET!
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json()) 
 
-//This can all be deleted?
-app.post('/auth', (req, res) => {
-    const content: IAuth = req.body
-    // Check against DB that user credentials are valid
-    const token = jwt.sign({
-        alias: content.username,
-        color: "#FF0000",
-        verified: true
-    }, secret)
-    res.send(token)
-})
+
+// can we delete below code? ask bardia
+
+// app.post('/auth', (req, res) => {
+//     const content: IAuth = req.body
+//     // Check against DB that user credentials are valid
+//     const token = jwt.sign({
+//         alias: content.username,
+//         color: "#FF0000",
+//         verified: true
+//     }, secret)
+//     res.send(token)
+// })
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
