@@ -1,4 +1,5 @@
 export enum ConversationType {
+    CONVERSATION_JWT = "CONVERSATION_JWT",
     INITIATE = "INITIATE",
     CONVERSATION = "CONVERSATION"
 }
