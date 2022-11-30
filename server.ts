@@ -9,10 +9,12 @@ import * as jwt from 'jsonwebtoken'
 import { IConversationJWTMessage } from "./types/IConversationJWTMessage";
 import { IConversationMessage } from "./types/IConversationMessage";
 import * as dotenv from 'dotenv'
+import { environment } from "./env";
 
 dotenv.config()
 
-const secret = process.env.SECRET!
+// const secret = process.env.SECRET!
+const secret = environment.SECRET // not working here either 
 
 const app = express();
 
@@ -21,16 +23,16 @@ app.use(express.json())
 
 // can we delete below code? ask bardia
 
-// app.post('/auth', (req, res) => {
-//     const content: IAuth = req.body
-//     // Check against DB that user credentials are valid
-//     const token = jwt.sign({
-//         alias: content.username,
-//         color: "#FF0000",
-//         verified: true
-//     }, secret)
-//     res.send(token)
-// })
+app.post('/auth', (req, res) => {
+    const content: IAuth = req.body
+    // Check against DB that user credentials are valid
+    const token = jwt.sign({
+        alias: content.username,
+        color: "#FF0000",
+        verified: true
+    }, secret)
+    res.send(token)
+})
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
