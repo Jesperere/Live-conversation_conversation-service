@@ -13,13 +13,11 @@ import { environment } from "./env";
 
 dotenv.config()
 
-// const secret = process.env.SECRET!
-const secret = environment.SECRET // not working here either 
+const secret = environment.SECRET
 
 const app = express();
 
 app.use(express.json()) 
-
 
 // can we delete below code? ask bardia
 
@@ -50,6 +48,11 @@ const broadCastToClients = (content: IConversationPackage) => {
 }
 
 wss.on("connection", (ws: WebSocket) => {
+
+    if(!process.env.SECRET) {
+        throw new Error("SECRET is required") //ask bardia if this should be here
+    }
+
     console.log("Client connected")
     const [, id] = Math.random().toString().split('.')
     clients[id] = ws;
@@ -102,4 +105,6 @@ wss.on("connection", (ws: WebSocket) => {
 
 server.listen(process.env.PORT || 8999, () => {
     console.log("Server started!");
+    console.log(process.env.PORT);
+    
 }); 
